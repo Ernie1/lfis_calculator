@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>A novel liver-function-indicators-based prognosis signature (LFIS) for patients with hepatocellular carcinoma
+    treated with anti-programmed cell death-1 therapy</title>
+  <style>
+    th {
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div class="cal">
+      <div class="title" align="center">
+        <h3 class="title">A novel liver-function-indicators-based prognosis signature (LFIS) for patients with
+          hepatocellular carcinoma treated with anti-programmed cell death-1 therapy</h3>
+      </div>
+      <div>
+        <table align="center"
+          style="max-width:600px;border-collapse:collapse;word-wrap:break-word;word-break:break-all;">
+          <caption>
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col" colspan="2">Your liver functional blood serum test results:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="col" colspan="2"></th>
+            </tr>
+            <tr>
+              <th scope="col" colspan="2"></th>
+            </tr>
+
+            <tr>
+              <th scope="row">
+                <label for="platelet">Platelet (10<sup>9</sup>/L)</label>
+              </th>
+              <td>
+                <input type="number" name="platelet" id="platelet" value=0 />
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row">
+                <label for="lymphocyte">Lymphocyte (10<sup>9</sup>/L)</label>
+              </th>
+              <td>
+                <input type="number" name="lymphocyte" id="lymphocyte" value=0 />
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row">
+                <label for="albumin">Albumin (g/L)</label>
+              </th>
+              <td>
+                <input type="number" name="albumin" id="albumin" value=0 />
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row">
+                <label for="AST">Aspartate aminotransferase (AST) (U/L)</label>
+              </th>
+              <td>
+                <input type="number" name="AST" id="AST" value=0 />
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row">
+                <label for="ALP">Alkaline phosphatase (ALP) (U/L)</label>
+              </th>
+              <td>
+                <input type="number" name="ALP" id="ALP" value=0 />
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row">
+                <label for="GGT">Gamma-glutamyl transpeptidase (GGT) (U/L)</label>
+              </th>
+              <td>
+                <input type="number" name="GGT" id="GGT" value=0 />
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row">
+                <label>Child-Pugh</label>
+              </th>
+              <td>
+                <input type="radio" id="rad1" name="cp" value="A" checked />
+                <label for="rad1">A</label>
+                <input type="radio" id="rad2" name="cp" value="B" />
+                <label for="rad2">B</label>
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row"></th>
+              <td>
+                <button type="button" value="Calculate" onclick="calcul()" style="font-weight:bold;">Calculate</button>
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="col" colspan="2"></th>
+            </tr>
+            <tr>
+              <th scope="col" colspan="2"></th>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row" colspan="2" id="info1"></th>
+            </tr>
+            <tr>
+              <td scope="row" colspan="2" id="LFIS">
+                </th>
+            </tr>
+            <tr>
+              <th scope="row" colspan="2" id="info2"></th>
+            </tr>
+            <tr>
+              <td scope="row" colspan="2" id="GROUP">
+                </th>
+            </tr>
+            <tr>
+              <th scope="row" colspan="2" id="info3"></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </main>
+  <script type="text/javascript">
+    function calcul() {
+      let platelet = parseFloat(document.getElementById("platelet").value);
+      let lymphocyte = parseFloat(document.getElementById("lymphocyte").value);
+      let albumin = parseFloat(document.getElementById("albumin").value);
+      let AST = parseFloat(document.getElementById("AST").value);
+      let ALP = parseFloat(document.getElementById("ALP").value);
+      let GGT = parseFloat(document.getElementById("GGT").value);
+
+      var PAL = -0.777 * albumin / 10 - 0.575 * Math.log(platelet) / Math.log(10);
+      var APAR = ALP / albumin;
+      var GLR = GGT / lymphocyte;
+      var ALRI = AST / lymphocyte;
+
+      if (PAL <= -3.77) {
+        PAL = 0;
+      } else if (PAL > -3.04) {
+        PAL = -0.10236;
+      } else {
+        PAL = 0.35054;
+      }
+
+      if (APAR < 2.33) {
+        APAR = 0;
+      } else {
+        APAR = 0.98514;
+      }
+
+      if (GLR < 323.58) {
+        GLR = 0;
+      } else {
+        GLR = 0.58049;
+      }
+
+      if (ALRI < 100.15) {
+        ALRI = 0;
+      } else {
+        ALRI = 0.58714;
+      }
+
+      var CP = 0;
+      if (document.getElementById("rad2").checked) {
+        CP = 0.63319;
+      }
+
+      var LFIS = Math.exp(PAL + APAR + GLR + ALRI + CP);
+
+      var GROUP = "Group1 (Low risk)";
+      if (LFIS > 1 && LFIS <= 3) {
+        GROUP = "Group2 (Low risk)";
+      } else if (LFIS > 3 && LFIS <= 5) {
+        GROUP = "Group3 (Middle risk)";
+      } else if (LFIS > 5) {
+        GROUP = "Group4 (High risk)";
+      }
+
+      document.getElementById("info1").innerHTML = "Based on your liver functional blood serum test results, your LFIS score is";
+      document.getElementById("LFIS").innerHTML = LFIS;
+      document.getElementById("info2").innerHTML = "And you are in";
+      document.getElementById("GROUP").innerHTML = GROUP;
+      if (GROUP == "Group1 (Low risk)" || GROUP == "Group2 (Low risk)") {
+        document.getElementById("info3").innerHTML = "You could possiblely benefit from anti-PD1 therapy.";
+      } else {
+        document.getElementById("info3").innerHTML = "It suggests that anti-PD1 therapy alone could not achieve a satisfactory prognosis, and more closer surveillance and liver function supportive approaches should be undertaken.";
+      }
+    }
+  </script>
+</body>
+
+</html>
