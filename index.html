@@ -151,7 +151,7 @@
       let ALP = parseFloat(document.getElementById("ALP").value);
       let GGT = parseFloat(document.getElementById("GGT").value);
 
-      var PAL = -0.777 * albumin / 10 - 0.575 * Math.log(platelet) / Math.log(10);
+      var PAL = -0.777 * albumin / 10 - 0.575 * Math.log10(platelet / 10);
       var APAR = ALP / albumin;
       var GLR = GGT / lymphocyte;
       var ALRI = AST / lymphocyte;
@@ -203,7 +203,7 @@
       document.getElementById("info2").innerHTML = "And you are in";
       document.getElementById("GROUP").innerHTML = GROUP;
       if (GROUP == "Group1 (Low risk)" || GROUP == "Group2 (Low risk)") {
-        document.getElementById("info3").innerHTML = "You could possiblely benefit from anti-PD1 therapy.";
+        document.getElementById("info3").innerHTML = "You could possibly benefit from anti-PD1 therapy.";
       } else {
         document.getElementById("info3").innerHTML = "It suggests that anti-PD1 therapy alone could not achieve a satisfactory prognosis, and more closer surveillance and liver function supportive approaches should be undertaken.";
       }
